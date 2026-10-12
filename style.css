@@ -1,0 +1,38 @@
+.closebutton {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background-color: red;
+  border-radius: 100%;
+  margin-left: 6px;
+}
+
+.window {
+    background-color: #6DB8FA; 
+    flex-direction: column; 
+    border: solid; 
+    padding: 0; 
+    overflow: hidden; 
+    border-radius: 10px; 
+    width: fit-content; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+.windowHeader {
+    width: 100%; 
+    display: flex; 
+    align-items: center; 
+    cursor: move; 
+    justify-content: center; 
+    margin: 0px; 
+    background-color: black
+}
+
+.headerText {
+    color:white; 
+    font-family: comic sans ms; 
+    margin: 0;
+}

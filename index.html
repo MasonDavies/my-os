@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html>
 
-  <body style="background-color: #747cb3;">
-    <h1 style="color: rgb(0, 0, 0); text-align: center; font-family: comic sans ms;">Welcome to Fort OS</h1>
-    <p style="text-align: center; font-family: comic sans ms; font-size: 20px;">The best operating system for Fortnite players</p>
-    <img style="width: 900px; height: 100%; object-fit: cover; display: block; margin: 0 auto;" src="https://i.guim.co.uk/img/media/8ff402b984c27c7ec5320a4638e22ea70724171d/75_0_1787_1072/master/1787.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=c79784ee5eff3d30c472de8383d40f9c"/>
-  </body>
+<body style="background-color: #747cb3; background-image:url(https://images.wallpapersden.com/image/download/background-of-fortnite-chapter-2_a2xlbGWUmZqaraWkpJRmbmdlrWZlbWU.jpg);">
+  
+  <!-- Top bar -->
+  <div style="position: absolute; width: 99%; display: flex; backdrop-filter: blur(6px); background-color: rgba(0, 68, 169, 0.559); color: #fff; justify-content: space-between; border-radius: 10px;">
+    <p style="margin-left: 16px; font-family: comic sans ms; font-weight: bold;" id="welcomeopen">
+      FortOS
+    </p>
+    <p style="margin-right: 16px; font-family: comic sans ms; font-weight: bold; " id="dateTime">
+      Time
+    </p>
+  </div>
+
+  <!-- Welcome window -->
+  <div class="window" id="welcome">
+    <div class="windowHeader" id="welcomeheader">
+      <p class="headerText">Welcome</p>
+      <div class="closebutton" id="welcomeclose"></div>
+    </div>
+    <h1 style="color: rgb(0, 0, 0); text-align: center; font-family: comic sans ms;">Welcome to Fort OS</h2>
+    <p style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;">The best operating system for Fortnite players</p>
+  </div>
+
+  <script src="script.js"></script>
+  <head>
+    <script type="module" src="./script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+</body>
 
 </html>
