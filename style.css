@@ -36,3 +36,10 @@
     font-family: comic sans ms; 
     margin: 0;
 }
+
+.paintCanvas {
+    width: 300px;
+    height: 300px;
+    cursor: crosshair;
+    touch-action: none;
+}
