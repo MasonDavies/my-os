@@ -1,16 +1,34 @@
 <!DOCTYPE html>
 <html>
 
-<body style="background-color: #747cb3; background-image:url(https://images.wallpapersden.com/image/download/background-of-fortnite-chapter-2_a2xlbGWUmZqaraWkpJRmbmdlrWZlbWU.jpg);">
-  
+<body
+  style="background-color: #747cb3; background-image:url(https://images.wallpapersden.com/image/download/background-of-fortnite-chapter-2_a2xlbGWUmZqaraWkpJRmbmdlrWZlbWU.jpg);">
+
   <!-- Top bar -->
-  <div id="top" style="position: absolute; width: 99%; display: flex; backdrop-filter: blur(6px); background-color: rgba(0, 68, 169, 0.559); color: #fff; justify-content: space-between; border-radius: 10px;">
+  <div id="top"
+    style="position: absolute; width: 99%; display: flex; backdrop-filter: blur(6px); background-color: rgba(0, 68, 169, 0.559); color: #fff; justify-content: space-between; border-radius: 10px;">
     <p style="margin-left: 16px; font-family: comic sans ms; font-weight: bold;" id="welcomeopen">
       FortOS
     </p>
     <p style="margin-right: 16px; font-family: comic sans ms; font-weight: bold; " id="dateTime">
       Time
     </p>
+  </div>
+
+  <!-- Bottom bar -->
+  <div id="bottom"
+    style="position: absolute; bottom: 0; left: 25%; width: 45%; display: flex; backdrop-filter: blur(6px); background-color: rgba(0, 41, 103, 0.824); color: #fff; justify-content: space-between; border-radius: 10px;">
+    <img id="homeIcon" src="Llama.png" style="width: 64px; height: 64px; margin-left: 5px; cursor: pointer;" />
+  </div>
+
+  <!-- Home -->
+  <div class="window" id="home" style="display: none; width: 400px; height: 300px;">
+    <div class="windowHeader" id="homeheader">
+      <p class="headerText">Home</p>
+      <div class="closebutton" id="homeclose"></div>
+    </div>
+    <h1 id="emptyAppsMessage" style="color: rgb(0, 0, 0); text-align: center; font-family: comic sans ms;">No Recent Apps. Go Explore!</h1>
+    <div id="recentApps" style="display: flex; flex-direction: row; align-items: center; justify-content: center; height: 100%;"></div>
   </div>
 
   <!-- Welcome window -->
@@ -20,17 +38,18 @@
       <div class="closebutton" id="welcomeclose"></div>
     </div>
     <h1 style="color: rgb(0, 0, 0); text-align: center; font-family: comic sans ms;">Welcome to Fort OS</h2>
-    <p style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;">The best operating system for Fortnite players</p>
+      <p style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;">The best operating
+        system for Fortnite players</p>
   </div>
 
   <div id="desktopApps" style="padding-top: 64px; padding-left: 64px; display: flex; flex-direction: row;">
     <div style="text-align: center; padding: 10px; width: fit-content;">
-        <img id="notesIcon" src="noteIcon.png" style="width: 64px; height: 64px; border-radius: 10px;"/>
-        <p style="margin: 0; color: black">Strategy Notepad</p>
+      <img id="notesIcon" src="noteIcon.png" style="width: 64px; height: 64px; border-radius: 10px;" />
+      <p style="margin: 0; color: black">Strategy Notepad</p>
     </div>
     <div style="text-align: center; padding: 10px; width: fit-content;">
-        <img id="mapIcon" src="mapPin.jpg" style="width: 64px; height: 64px; border-radius: 10px;"/>
-        <p style="margin: 0; color: black">Paint Map</p>
+      <img id="mapIcon" src="mapPin.jpg" style="width: 64px; height: 64px; border-radius: 10px;" />
+      <p style="margin: 0; color: black">Paint Map</p>
     </div>
   </div>
 
@@ -39,8 +58,10 @@
       <p class="headerText">Strategy Notepad</p>
       <div class="closebutton" id="notesclose"></div>
     </div>
-    <div style="height: 250px; margin: 16px; background-color: rgb(204, 204, 204); border-radius: 10px; overflow-y: scroll;">
-      <p style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;" contenteditable="True">Write notes about rotations and strategies here</p>
+    <div
+      style="height: 250px; margin: 16px; background-color: rgb(250,250,250); border-radius: 10px; overflow-y: scroll;">
+      <p id="noteContent" style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;"
+        contenteditable="True">Write notes about rotations and strategies here</p>
     </div>
   </div>
 
@@ -54,13 +75,15 @@
       <canvas id="paintCanvas" class="paintCanvas" style="position: absolute;"></canvas>
       <img src="map.png" style="width: 300px; height: 100%;">
     </div>
-    <button id="clearPaint" style="cursor: pointer; background-color: #6DB8FA; font-family: comic sans ms; font-size: medium; border-color: transparent;">Clear</button>
+    <button id="clearPaint"
+      style="cursor: pointer; background-color: #6DB8FA; font-family: comic sans ms; font-size: medium; border-color: transparent;">Clear</button>
   </div>
 
   <script src="script.js"></script>
+
   <head>
     <script type="module" src="./script.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
 </body>
 
