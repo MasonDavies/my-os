@@ -1,44 +1,58 @@
 setInterval(function () {
-  document.querySelector("#dateTime").innerHTML = new Date().toLocaleString();
+  var now = new Date();
+  document.querySelector("#dateTime").innerHTML = now.getHours() % 12 + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes() + "<br>" + (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear();
 }, 1000);
 
 function dragElement(element) {
   var initialX = 0;
   var initialY = 0;
-  var currentX = 0;
-  var currentY = 0;
 
-  if (document.getElementById(element.id + "header")) {
-    document.getElementById(element.id + "header").onmousedown = startDragging;
+  const header = document.getElementById(element.id + "header");
+
+  if (header) {
+    header.onmousedown = startDragging;
   } else {
     element.onmousedown = startDragging;
   }
 
   function startDragging(e) {
-    e = e || window.event;
+    if (element.classList.contains("fullscreen")) {
+      return;
+    }
+
     e.preventDefault();
+
     initialX = e.clientX;
     initialY = e.clientY;
+
     document.onmouseup = stopDragging;
-    document.onmousemove = dragElement;
+    document.onmousemove = dragWindow;
   }
 
-  function dragElement(e) {
-    e = e || window.event;
+  function dragWindow(e) {
     e.preventDefault();
-    currentX = initialX - e.clientX;
-    currentY = initialY - e.clientY;
+
+    const deltaX = e.clientX - initialX;
+    const deltaY = e.clientY - initialY;
+
+    const rect = element.getBoundingClientRect();
+
+    let x = rect.left + deltaX;
+    let y = rect.top + deltaY;
+
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
+    x = Math.max(0, Math.min(x, maxX));
+    y = Math.max(0, Math.min(y, maxY));
+
+    // Remove the centering transform after dragging starts
+    element.style.transform = "none";
+    element.style.left = x + "px";
+    element.style.top = y + "px";
+
     initialX = e.clientX;
     initialY = e.clientY;
-
-    var newTop = element.offsetTop - currentY
-    var newLeft = element.offsetLeft - currentX
-
-    if (newTop < 0) newTop = 0
-    if (newLeft < 0) newLeft = 0
-
-    element.style.top = newTop + "px";
-    element.style.left = newLeft + "px";
   }
 
   function stopDragging() {
@@ -47,43 +61,33 @@ function dragElement(element) {
   }
 }
 
-var topBar = document.querySelector("#top");
-var welcomeScreen = document.querySelector("#welcome");
-var welcomeScreenOpen = document.querySelector("#welcomeopen");
-var welcomeScreenClose = document.querySelector("#welcomeclose");
-
-function closeWindow(element) {
-  element.style.display = "none"
-}
-
-let recentApps = JSON.parse(localStorage.getItem("recentApps")) || [];
-renderRecentApps();
 function openWindow(element) {
+  if (!element) {
+    return;
+  }
+
   element.style.display = "flex";
-  biggestIndex++;  // Increment biggestIndex by 1
+
+  biggestIndex++;
   element.style.zIndex = biggestIndex;
-  topBar.style.zIndex = biggestIndex + 1;
-  if (element.id == "home") {
+
+  if (element.id === "home") {
     if (recentApps.length === 0) {
       document.querySelector("#emptyAppsMessage").style.display = "block";
     } else {
       document.querySelector("#emptyAppsMessage").style.display = "none";
     }
   }
+
+  if (element.id !== "home" && element.id !== "welcome") {
+    addToTaskbar(element.id);
+  }
 }
 
-welcomeScreenOpen.addEventListener("click", function () {
-  openWindow(welcomeScreen);
-});
-
-initializeWindow("welcome");
-if (localStorage.getItem("visitedBefore")) {
-  closeWindow(welcomeScreen);
+function closeWindow(element) {
+  element.style.display = "none"
+  removeFromTaskbar(element.id);
 }
-initializeWindow("notes");
-initializeWindow("map");
-
-var selectedIcon = null;
 
 function handleiconTap(icon, screen) {
   if (icon.classList.contains("selected")) {
@@ -116,6 +120,26 @@ function makeClosable(elementName) {
   });
 }
 
+function makeFullscreenable(elementName) {
+  const button = document.querySelector("#" + elementName + "fullscreen");
+  const element = document.querySelector("#" + elementName);
+
+  if (!button) {
+    console.error("Fullscreen button not found:", "#" + elementName + "fullscreen");
+    return;
+  }
+
+  button.addEventListener("click", function (e) {
+    e.stopPropagation();
+    element.classList.toggle("fullscreen");
+
+    if (element.classList.contains("fullscreen")) {
+      biggestIndex++;
+      element.style.zIndex = biggestIndex;
+    }
+  });
+}
+
 function selectIcon(icon) {
   icon.classList.add("selected");
   selectedIcon = icon;
@@ -126,8 +150,6 @@ function deselectIcon(icon) {
   selectedIcon = undefined;
 }
 
-var biggestIndex = 0;
-
 function addWindowTapHandling(element) {
   element.addEventListener("mousedown", () => handleWindowTap(element));
 }
@@ -135,7 +157,6 @@ function addWindowTapHandling(element) {
 function handleWindowTap(element) {
   biggestIndex++;
   element.style.zIndex = biggestIndex;
-  topBar.style.zIndex = biggestIndex + 1;
   if (selectedIcon) {
     deselectIcon(selectedIcon);
   }
@@ -145,11 +166,13 @@ function initializeWindow(elementName) {
   var element = document.querySelector("#" + elementName);
   addWindowTapHandling(element);
   makeClosable(elementName);
+  makeFullscreenable(elementName);
   dragElement(element);
   if (elementName != "welcome") {
     initializeIcon(elementName);
   }
 }
+
 
 function renderRecentApps() {
   const container = document.querySelector("#recentApps");
@@ -164,11 +187,17 @@ function renderRecentApps() {
 
   emptyMessage.style.display = "none";
 
-  icon.addEventListener("click", function (e) {
-    e.stopPropagation();
-
+  recentApps.forEach(appId => {
+    const originalIcon = document.querySelector("#" + appId + "Icon");
     const screen = document.querySelector("#" + appId);
-    if (screen) {
+
+    if (!originalIcon || !screen) return;
+
+    const icon = originalIcon.cloneNode(true);
+    icon.classList.remove("selected");
+
+    icon.addEventListener("click", function (e) {
+      e.stopPropagation();
       openWindow(screen);
 
       recentApps = recentApps.filter(id => id !== appId);
@@ -176,17 +205,62 @@ function renderRecentApps() {
 
       localStorage.setItem("recentApps", JSON.stringify(recentApps));
       renderRecentApps();
-    }
+    });
+
+    container.appendChild(icon);
   });
 }
 
-var notesContent = document.querySelector("#noteContent");
+function addToTaskbar(elementName) {
+  console.log("[addToTaskbar] Called for:", elementName);
 
-notesContent.innerHTML = localStorage.getItem("noteContent") || "Write notes about rotations and strategies here";
+  const taskbar = document.querySelector("#taskbar");
 
-notesContent.addEventListener("input", function () {
-  localStorage.setItem("noteContent", notesContent.innerHTML);
-});
+  const icon = document.querySelector("#" + elementName + "Icon");
+
+  if (!taskbar) {
+    return;
+  }
+
+  if (!icon) {
+    return;
+  }
+
+  const existingIcon = document.querySelector("#taskbar-" + elementName);
+
+  if (existingIcon) {
+    return;
+  }
+
+  const taskbarIcon = icon.cloneNode(true);
+  taskbarIcon.id = "taskbar-" + elementName;
+  taskbarIcon.className = "taskbar-icon";
+  taskbarIcon.classList.remove("selected");
+
+  taskbarIcon.addEventListener("click", function () {
+    console.log("[taskbar icon] Clicked:", elementName);
+
+    const appWindow = document.querySelector("#" + elementName);
+
+    if (!appWindow) {
+      console.error("[taskbar icon] Window not found:", elementName);
+      return;
+    }
+
+    openWindow(appWindow);
+  });
+
+  taskbar.appendChild(taskbarIcon);
+}
+
+function removeFromTaskbar(elementName) {
+
+  const icon = document.querySelector("#taskbar-" + elementName);
+
+  if (icon) {
+    icon.remove();
+  }
+}
 
 var canvas = document.querySelector("#paintCanvas")
 var ctx = canvas.getContext("2d");
@@ -227,6 +301,37 @@ document.querySelector("#clearPaint").addEventListener("click", function () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
-localStorage.setItem("visitedBefore", true);
+var welcomeScreen = document.querySelector("#welcome");
+var welcomeScreenClose = document.querySelector("#welcomeclose");
+var notesContent = document.querySelector("#noteContent");
+var searchButton = document.querySelector("#searchButton");
+let recentApps = JSON.parse(localStorage.getItem("recentApps")) || [];
+var selectedIcon = null;
+var biggestIndex = 0;
 
+localStorage.setItem("visitedBefore", true);
 initializeWindow("home");
+initializeWindow("welcome");
+initializeWindow("websearch");
+if (localStorage.getItem("visitedBefore")) {
+  closeWindow(welcomeScreen);
+}
+initializeWindow("notes");
+initializeWindow("map");
+initializeWindow("tracker");
+initializeWindow("settings");
+renderRecentApps();
+
+notesContent.innerHTML = localStorage.getItem("noteContent") || "Write notes about rotations and strategies here";
+
+notesContent.addEventListener("input", function () {
+  localStorage.setItem("noteContent", notesContent.innerHTML);
+});
+
+searchButton.addEventListener("click", function () {
+  var searchQuery = document.querySelector("#websearchText").innerText;
+  if (searchQuery.trim() !== "") {
+    var searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(searchQuery);
+    window.open(searchUrl, "_blank");
+  }
+});

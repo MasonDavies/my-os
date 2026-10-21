@@ -4,27 +4,18 @@
 <body
   style="background-color: #747cb3; background-image:url(https://images.wallpapersden.com/image/download/background-of-fortnite-chapter-2_a2xlbGWUmZqaraWkpJRmbmdlrWZlbWU.jpg);">
 
-  <!-- Top bar -->
-  <div id="top"
-    style="position: absolute; width: 99%; display: flex; backdrop-filter: blur(6px); background-color: rgba(0, 68, 169, 0.559); color: #fff; justify-content: space-between; border-radius: 10px;">
-    <p style="margin-left: 16px; font-family: comic sans ms; font-weight: bold;" id="welcomeopen">
-      FortOS
-    </p>
-    <p style="margin-right: 16px; font-family: comic sans ms; font-weight: bold; " id="dateTime">
+  <!-- Bottom bar -->
+  <div id="taskbar" style="z-index: 10000; display: flex; flex-direction: row; justify-content: flex-start; align-items: center; gap: 8px; position: fixed; bottom: 0; left: 25%; width: 45%; min-height: 74px; padding: 5px; box-sizing: border-box; backdrop-filter: blur(6px); background-color: rgba(0, 41, 103, 0.824); color: #fff; border-radius: 10px;">
+    <img id="homeIcon" src="Llama.png" style="width: 64px; height: 64px; margin-left: 5px; cursor: pointer;" />
+    <p style="top: 5%; left: 85%; margin-right: 16px; font-family: comic sans ms; font-weight: bold; font-size: 13px; position: absolute;" id="dateTime">
       Time
     </p>
-  </div>
-
-  <!-- Bottom bar -->
-  <div id="bottom"
-    style="position: absolute; bottom: 0; left: 25%; width: 45%; display: flex; backdrop-filter: blur(6px); background-color: rgba(0, 41, 103, 0.824); color: #fff; justify-content: space-between; border-radius: 10px;">
-    <img id="homeIcon" src="Llama.png" style="width: 64px; height: 64px; margin-left: 5px; cursor: pointer;" />
   </div>
 
   <!-- Home -->
   <div class="window" id="home" style="display: none; width: 400px; height: 300px;">
     <div class="windowHeader" id="homeheader">
-      <p class="headerText">Home</p>
+      <p class="headerText">Recent Apps</p>
       <div class="closebutton" id="homeclose"></div>
     </div>
     <h1 id="emptyAppsMessage" style="color: rgb(0, 0, 0); text-align: center; font-family: comic sans ms;">No Recent Apps. Go Explore!</h1>
@@ -42,24 +33,35 @@
         system for Fortnite players</p>
   </div>
 
-  <div id="desktopApps" style="padding-top: 64px; padding-left: 64px; display: flex; flex-direction: row;">
+  <div id="desktopApps" style="padding-top: 64px; padding-left: 64px; display: flex; flex-direction: row; font-family: comic sans ms; font-size: 18px; color: black;">
     <div style="text-align: center; padding: 10px; width: fit-content;">
       <img id="notesIcon" src="noteIcon.png" style="width: 64px; height: 64px; border-radius: 10px;" />
-      <p style="margin: 0; color: black">Strategy Notepad</p>
+      <p style="margin: 0; color: black">StratPad</p>
     </div>
     <div style="text-align: center; padding: 10px; width: fit-content;">
       <img id="mapIcon" src="mapPin.jpg" style="width: 64px; height: 64px; border-radius: 10px;" />
-      <p style="margin: 0; color: black">Paint Map</p>
+      <p style="margin: 0; color: black">Map</p>
     </div>
+    <div style="text-align: center; padding: 10px; width: fit-content;">
+      <img id="websearchIcon" src="websearchIcon.png" style="width: 64px; height: 64px; border-radius: 10px;" />
+      <p style="margin: 0; color: black">Web Search</p>
+    </div>
+    <div style="text-align: center; padding: 10px; width: fit-content;">
+      <img id="trackerIcon" src="trackerIcon.png" style="width: 64px; height: 64px; border-radius: 10px;" />
+      <p style="margin: 0; color: black">Tracker</p>
+    </div>
+    <!-- <div style="text-align: center; padding: 10px; width: fit-content;">
+      <img id="settingsIcon" src="settingsIcon.png" style="width: 64px; height: 64px; border-radius: 10px;" />
+      <p style="margin: 0; color: black">Settings</p>-->
   </div>
 
   <div class="window" id="notes" style="display: none; width: 400px; height: 300px;">
     <div class="windowHeader" id="notesheader">
-      <p class="headerText">Strategy Notepad</p>
+      <p class="headerText">StratPad</p>
+      <div class="fullscreenbutton" id="notesfullscreen"></div>
       <div class="closebutton" id="notesclose"></div>
     </div>
-    <div
-      style="height: 250px; margin: 16px; background-color: rgb(250,250,250); border-radius: 10px; overflow-y: scroll;">
+    <div style="height: 100%; margin: 16px; background-color: rgb(250,250,250); border-radius: 10px; overflow-y: auto;">
       <p id="noteContent" style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;"
         contenteditable="True">Write notes about rotations and strategies here</p>
     </div>
@@ -67,7 +69,8 @@
 
   <div class="window" id="map" style="display: none;">
     <div class="windowHeader" id="mapheader">
-      <p class="headerText">Paint Map</p>
+      <p class="headerText">Map</p>
+      <div class="fullscreenbutton"></div>
       <div class="closebutton" id="mapclose"></div>
     </div>
 
@@ -77,6 +80,37 @@
     </div>
     <button id="clearPaint"
       style="cursor: pointer; background-color: #6DB8FA; font-family: comic sans ms; font-size: medium; border-color: transparent;">Clear</button>
+  </div>
+
+  <div class="window" id="websearch" style="display: none; width: 400px; height: 150px;">
+    <div class="windowHeader" id="websearchheader">
+      <p class="headerText">Web Search</p>
+      <div class="fullscreenbutton"></div>
+      <div class="closebutton" id="websearchclose"></div>
+    </div>
+    <div style="height: 100%; margin: 16px; background-color: rgb(250,250,250); border-radius: 10px;">
+      <p id="websearchText" style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px; margin-right: 20%;" contenteditable="True">Search</p>
+      <img id="searchButton" src="searchButton.png" style="width: 50px; height: 45px; position: absolute; top: 55%; left: 85%; transform: translate(-50%, -50%); cursor: pointer;" />
+    </div>
+  </div>
+
+  <div class="window" id="settings" style="display: none; width: 400px; height: 300px;">
+    <div class="windowHeader" id="settingsheader">
+      <p class="headerText">Settings</p>
+      <div class="fullscreenbutton"></div>
+      <div class="closebutton" id="settingsclose"></div>
+    </div>
+    <h1 style="color: rgb(0, 0, 0); text-align: center; font-family: comic sans ms;">Settings</h1>
+      <p style="text-align: center; font-family: comic sans ms; font-size: 20px; padding: 10px;">Coming Soon!</p>
+  </div>
+
+  <div class="window" id="tracker" style="display: none; width: 400px; height: 300px;">
+    <div class="windowHeader" id="trackerheader">
+      <p class="headerText">Tracker</p>
+      <div class="fullscreenbutton" id="trackerfullscreen"></div>
+      <div class="closebutton" id="trackerclose"></div>
+    </div>
+    <iframe src="https://fortnitetracker.com/" style="width: 100%; height: 100%; border: none;"></iframe>
   </div>
 
   <script src="script.js"></script>

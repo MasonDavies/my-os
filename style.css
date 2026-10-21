@@ -7,6 +7,15 @@
   margin-left: 6px;
 }
 
+.fullscreenbutton {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background-color: rgb(201, 215, 0);
+  border-radius: 100%;
+  margin-left: 6px;
+}
+
 .window {
     background-color: #6DB8FA; 
     flex-direction: column; 
@@ -42,4 +51,23 @@
     height: 300px;
     cursor: crosshair;
     touch-action: none;
+}
+
+.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  transform: none !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+  z-index: 9999;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  margin: 5px;
 }
